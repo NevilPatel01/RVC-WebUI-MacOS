@@ -44,10 +44,10 @@ class RMVPE(nn.Module):
         super().__init__()
         self.device = device
         self.is_half = is_half
-        
+
         if not os.path.exists(model_path):
             raise FileNotFoundError(f"Model file not found: {model_path}")
-        
+
         try:
             # Load the model using torch.load instead of torch.jit.load
             state_dict = torch.load(model_path, map_location=device, weights_only=False)
@@ -56,7 +56,7 @@ class RMVPE(nn.Module):
                 nn.ReLU(),
                 nn.Conv2d(32, 32, kernel_size=3, padding=1),
                 nn.ReLU(),
-                nn.Conv2d(32, 1, kernel_size=3, padding=1)
+                nn.Conv2d(32, 1, kernel_size=3, padding=1),
             )
             self.model.load_state_dict(state_dict)
             self.model.eval()
@@ -65,14 +65,14 @@ class RMVPE(nn.Module):
             self.model = self.model.to(device)
         except Exception as e:
             raise RuntimeError(f"Failed to load model: {str(e)}")
-    
+
     def forward(self, x):
         with torch.no_grad():
             x = x.to(self.device)
             if self.is_half:
                 x = x.half()
             return self.model(x)
-            
+
     def calculate(self, x):
         return self.forward(x)
 

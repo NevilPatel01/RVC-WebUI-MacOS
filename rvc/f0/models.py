@@ -14,7 +14,7 @@ def get_rmvpe(model_path, device, is_half=True):
             nn.ReLU(),
             nn.Conv2d(32, 32, kernel_size=3, padding=1),
             nn.ReLU(),
-            nn.Conv2d(32, 1, kernel_size=3, padding=1)
+            nn.Conv2d(32, 1, kernel_size=3, padding=1),
         )
         model.load_state_dict(state_dict)
         model.eval()
